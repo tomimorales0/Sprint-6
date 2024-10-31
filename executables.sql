@@ -31,6 +31,6 @@ CREATE TABLE auditoria_cuenta (
 CREATE TRIGGER after_update_cuenta
 AFTER UPDATE OF saldo, iban, tipo_cuenta ON cuenta
 BEGIN
-    INSERT INTO auditoria_cuenta (old_id, new_id, old_balance, new_balance, old_iban, new_iban, old_type, new_type, user_action, created_at)
-    VALUES (OLD.cuenta_id, NEW.cuenta_id, OLD.saldo, NEW.saldo, OLD.iban, NEW.iban, OLD.tipo_cuenta, NEW.tipo_cuenta, 'UPDATE', CURRENT_TIMESTAMP);
+    INSERT INTO auditoria_cuenta (old_id, new_id, old_balance, new_balance, old_iban, new_iban, user_action, created_at)
+    VALUES (OLD.cuenta_id, NEW.cuenta_id, OLD.saldo, NEW.saldo, OLD.iban, NEW.iban, 'UPDATE', CURRENT_TIMESTAMP);
 END;
