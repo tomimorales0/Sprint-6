@@ -1,3 +1,17 @@
+//1
+
+
+//    
+UPDATE cliente
+SET customer_type = (
+    CASE ABS(RANDOM()) % 3
+        WHEN 0 THEN 'classic'
+        WHEN 1 THEN 'gold'
+        WHEN 2 THEN 'black'
+    END
+);
+
+
 //2
 
 CREATE VIEW vista_clientes AS
