@@ -111,6 +111,12 @@ JOIN cliente AS c ON c.branch_id = s.branch_id
 GROUP BY s.branch_name;
 
 
+SELECT sucursal, COUNT(card_id) AS num_credit_cards
+FROM tarjetas
+GROUP BY sucursal
+ORDER BY num_credit_cards DESC;
+
+
 
 //Cantidad de tarjetas de crédito por tipo por sucursal??
 
@@ -118,5 +124,37 @@ GROUP BY s.branch_name;
 
 SELECT s.branch_name, AVG(p.loan_total) AS average_loan
 FROM prestamo AS p
-JOIN sucursal AS s ON p.branch_id = s.branch_id
+JOIN sucursal AS s ON p.loan_id = s.branch_id
 GROUP BY s.branch_name;
+
+
+
+
+CREATE TRIGGER IF NOT EXISTS audit_update_cuenta
+AFTER UPDATE OF balance, iban ON cuenta
+FOR EACH ROW
+BEGIN
+    INSERT INTO auditoria_cuenta (
+        old_id, 
+        new_id, 
+        old_balance, 
+        new_balance, 
+        old_iban, 
+        new_iban, 
+        old_type, 
+        new_type, 
+        user_action, 
+        created_at
+    ) VALUES (
+        OLD.account_id, 
+        NEW.account_id, 
+        OLD.balance, 
+        NEW.balance, 
+        OLD.iban, 
+        NEW.iban, 
+        OLD.type, 
+        NEW.type, 
+        'UPDATE', 
+        CURRENT_TIMESTAMP
+    );
+END;
