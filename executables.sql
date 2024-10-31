@@ -22,8 +22,6 @@ CREATE TABLE auditoria_cuenta (
     new_balance INTEGER,
     old_iban VARCHAR(34),
     new_iban VARCHAR(34),
-    old_type VARCHAR(255),
-    new_type VARCHAR(255),
     user_action VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
