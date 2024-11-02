@@ -1,7 +1,6 @@
-//1
+////1
 
 
-//    
 UPDATE cliente
 SET customer_type = (
     CASE ABS(RANDOM()) % 3
@@ -12,7 +11,7 @@ SET customer_type = (
 );
 
 
-//2
+/////2
 
 CREATE VIEW vista_clientes AS
 SELECT 
@@ -24,34 +23,34 @@ SELECT
     strftime('%Y', 'now') - strftime('%Y', dob) - (strftime('%m-%d', 'now') < strftime('%m-%d', dob)) AS edad
 FROM cliente;
 
-
+//
 
 SELECT *
 FROM vista_clientes
 WHERE edad > 40
 ORDER BY dni;
 
-
+//
  
 SELECT *
 FROM vista_clientes
 WHERE nombre = 'Anne' OR nombre = 'Tyler'
 ORDER BY edad;
 
-//3
+/////3
 
 SELECT *
 FROM cuenta
 WHERE balance < 0;
 
-
+//
 
 SELECT customer_name, customer_surname, 
        strftime('%Y', 'now') - strftime('%Y', dob) - (strftime('%m-%d', 'now') < strftime('%m-%d', dob)) AS edad
 FROM cliente
 WHERE customer_surname LIKE '%Z%';
 
-
+//
 
 
 SELECT c.customer_name, c.customer_surname, 
@@ -62,27 +61,27 @@ JOIN sucursal AS s ON c.branch_id = s.branch_id
 WHERE c.customer_name = 'Brendan'
 ORDER BY s.branch_name;
 
-
+//
 
 
 SELECT *
 FROM prestamo
 WHERE loan_total > 8000000 OR loan_type = 'Prendario';
 
-
+//
 
 SELECT *
 FROM prestamo
 WHERE loan_total > (SELECT AVG(loan_total) FROM prestamo);
 
-
+//
 
 
 SELECT COUNT(*)
 FROM cliente
 WHERE strftime('%Y', 'now') - strftime('%Y', dob) < 50;
 
-
+//
 
 
 SELECT *
@@ -90,7 +89,7 @@ FROM cuenta
 WHERE balance > 800000
 LIMIT 5;
 
-
+//
 
 
 SELECT *
@@ -99,7 +98,7 @@ WHERE strftime('%m', loan_date) IN ('04', '06', '08')
 ORDER BY loan_total;
 
 
-
+//
 
 
 SELECT loan_type, SUM(loan_total) AS loan_total_accu
@@ -107,7 +106,7 @@ FROM prestamo
 GROUP BY loan_type;
 
 
-//4
+/////4
 
 SELECT s.branch_name, COUNT(c.customer_id) AS customer_count
 FROM cliente AS c
@@ -118,7 +117,7 @@ ORDER BY customer_count DESC;
 //
 
 
-SELECT s.branch_name, COUNT(e.employee_id) / COUNT(c.customer_id) AS employees_per_client
+SELECT s.branch_name, COUNT(e.employee_id) *1.0 / COUNT(c.customer_id) AS employees_per_client
 FROM empleado AS e
 JOIN sucursal AS s ON e.branch_id = s.branch_id
 JOIN cliente AS c ON c.branch_id = s.branch_id
@@ -160,6 +159,7 @@ UPDATE cuenta
 SET balance = balance + 1000 
 WHERE account_id = 400;
 
+//
 
 INSERT INTO movimientos (movements_id, account_number, amount, operation_type, transaction_time)
 VALUES 
@@ -167,13 +167,4 @@ VALUES
 (2, 400, +1000, 'deposito', CURRENT_TIMESTAMP);
 
 
-
-IF @@ERROR
-BEGIN
-
-    ROLLBACK TRANSACTION;
-END
-ELSE
-BEGIN
-    COMMIT TRANSACTION;
-END
+COMMIT;
